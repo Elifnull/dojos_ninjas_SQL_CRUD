@@ -33,7 +33,7 @@ class MySQLConnection:
             except Exception as e:
                 # in case the query fails
                 print("Something went wrong", e)
-                return False #this bool saved my code!
+                return False
             finally:
                 # close the connection
                 self.connection.close() 
