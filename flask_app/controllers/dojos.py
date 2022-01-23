@@ -12,7 +12,10 @@ def dojos():
 
 @app.route('/create_dojo',methods=['POST'])
 def create_dojo():
-    Dojo.save()
+    data = {
+        "name" : request.form["name"]
+    }
+    Dojo.save(request.form) # submit form directly in as data if formated same as dictionary
     return redirect('/dojos')
 
 @app.route('/dojo/<int:id>')
