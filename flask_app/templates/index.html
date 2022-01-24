@@ -21,7 +21,7 @@
                         <input type="text" name="name" class="form-control">
                         <div class="form-text text-primary">Submit a new Dojo.</div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Dojo</button>
+                    <button type="submit" class="btn btn-warning">Add Dojo</button>
                 </form>
             </div>
             <div class="col-4 bg-dark rounded">
@@ -31,6 +31,7 @@
                     <a href="/dojo/{{dojo.id}}"class='text-primary'>{{dojo.name}}</a>
                 </p>
                 {% endfor %}
+                
             </div>
             <a href="/ninjas">ADD NINJA</a>
         </div>

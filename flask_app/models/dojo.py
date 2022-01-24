@@ -1,6 +1,6 @@
 # import the function that will return an instance of a connection
 from flask_app.config.mysqlconnection import connectToMySQL
-from flask_app.models.ninja import Ninja
+from flask_app.models import ninja
 
 # model the class after the user table from our database
 class Dojo:
@@ -12,12 +12,21 @@ class Dojo:
         self.ninjas =[]
     # Now we use class methods to query our database
     @classmethod
-    def get_ninjas(cls, data):
-        query = "SELECT * FROM dojos LEFT JOIN ninjas ON ninjas.dojo_id = dojos.id WHERE dojos.id = %(dojo_id)s"
-        results = connectToMySQL('dojos_and_ninjas_schema').query_db(query,data)
-        dojo = (cls(results[0]))
-        for n in dojo:
-            dojo.ninjas.append(Ninja(n))
+    def get_ninjas(cls, data ):
+        query = "SELECT * FROM dojos LEFT JOIN ninjas on dojos.id = ninjas.dojo_id WHERE dojos.id = %(id)s;"
+        result = connectToMySQL('dojos_and_ninjas_schema').query_db(query,data)
+        print(result)
+        dojo = cls(result[0])
+        for n in result:
+            nm = {
+                'id': n['ninjas.id'],
+                'first_name': n['first_name'],
+                'last_name': n['last_name'],
+                'age': n['age'],
+                'created_at': n['ninjas.created_at'],
+                'updated_at': n['ninjas.updated_at']
+            }
+            dojo.ninjas.append( ninja.Ninja(nm) )
         return dojo
 
     @classmethod
@@ -52,11 +61,4 @@ class Dojo:
     def update_dojo(cls, data):
         query ="UPDATE dojos SET name=%(name)s, updated_at=NOW() WHERE id = %(id)s;"
         result = connectToMySQL('dojos_and_ninjas_schema').query_db( query, data)
-        return result
-    
-    @classmethod
-    def delete_dojo(cls, data):
-        query = "DELETE FROM dojos WHERE id = %(id)s;"
-        result = connectToMySQL('dojos_and_ninjas_schema').query_db( query, data  )
-        print(result)
         return result
